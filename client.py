@@ -1,11 +1,11 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from pymongo import MongoClient
 from threading import Thread
 import config
 from time import sleep
 from os import listdir
 
-app = Client("session", config.api_id, config.api_hash, plugins=dict(root="Plugins"))
+app = Client(config.session, config.api_id, config.api_hash, plugins=dict(root="Plugins"))
 
 mclient = MongoClient(config.mongo_connect)
 database = mclient["Telegram"]
@@ -18,7 +18,7 @@ else:
     data = collection.find_one({})
 
 
-@app.on_message(Filters.me & Filters.command(['helpme'], ['.', '/']))
+@app.on_message(filters.me & filters.command(['helpme'], ['.', '/']))
 def help_message(client, message):
     sleep(0.2)
     message.edit('Commands -> [telegra.ph](https://telegra.ph/TeleUserBot-Commands-03-21)\n'
@@ -27,7 +27,7 @@ def help_message(client, message):
                  parse_mode="Markdown", disable_web_page_preview=True)
 
 
-@app.on_message(Filters.me & Filters.command(['send plugin'], ['.', '/']))
+@app.on_message(filters.me & filters.command(['send plugin'], ['.', '/']))
 def send_plugin(client, message):
     sleep(0.2)
     text = message.text
