@@ -1,10 +1,10 @@
-from pyrogram import Filters, Client
+from pyrogram import filters, Client
 from time import time, sleep
 from google_search_client.search_client import GoogleSearchClient
 import ast
 
 
-@Client.on_message(Filters.me & Filters.command(['google'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['google'], ['.', '/']))
 def google_search(client, message):
     sleep(0.2)
     text = message.text

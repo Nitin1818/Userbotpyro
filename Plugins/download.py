@@ -1,9 +1,9 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from os import listdir, remove
 from time import sleep, time
 
 
-@Client.on_message(Filters.me & Filters.command(['download'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['download'], ['.', '/']))
 def download(app, message):
     sleep(0.2)
     if message.reply_to_message:
@@ -20,17 +20,16 @@ def download(app, message):
                 elapsed_time = str(end - start)
                 message.edit('File is downloaded\nElapsed time : {}'.format(elapsed_time))
                 return
-            else:
-                file_name = " ".join(message.text.split()[1:]) + ".txt"
-                if file_name in listdir("./Downloads/"):
-                    message.edit('There is already a file with this name')
-                    return
-                app.download_media(message.reply_to_message, file_name="./Downloads/{}".format(file_name))
-                end = time()
-                elapsed_time = str(end - start)
-                message.edit('File is downloaded\nFile name : {}\nElapsed time : {}'.format(file_name,
-                                                                                            elapsed_time))
+            file_name = " ".join(message.text.split()[1:]) + ".txt"
+            if file_name in listdir("./Downloads/"):
+                message.edit('There is already a file with this name')
                 return
+            app.download_media(message.reply_to_message, file_name="./Downloads/{}".format(file_name))
+            end = time()
+            elapsed_time = str(end - start)
+            message.edit('File is downloaded\nFile name : {}\nElapsed time : {}'.format(file_name,
+                                                                                        elapsed_time))
+            return
         if message.reply_to_message.video:
             if len(message.text.split()) == 1:
                 num = 0
@@ -46,17 +45,16 @@ def download(app, message):
                 message.edit('Video is downloaded\nFile name : {}\nElapsed time : {}'.format(file_name,
                                                                                              elapsed_time))
                 return
-            else:
-                file_name = " ".join(message.text.split()[1:]) + ".mp4"
-                if file_name in listdir("./Downloads/"):
-                    message.edit('There is already a video with this name')
-                    return
-                app.download_media(message.reply_to_message, file_name="./Downloads/{}".format(file_name))
-                end = time()
-                elapsed_time = str(end - start)
-                message.edit('Video is downloaded\nFile name : {}\nElapsed time : {}'.format(file_name,
-                                                                                             elapsed_time))
+            file_name = " ".join(message.text.split()[1:]) + ".mp4"
+            if file_name in listdir("./Downloads/"):
+                message.edit('There is already a video with this name')
                 return
+            app.download_media(message.reply_to_message, file_name="./Downloads/{}".format(file_name))
+            end = time()
+            elapsed_time = str(end - start)
+            message.edit('Video is downloaded\nFile name : {}\nElapsed time : {}'.format(file_name,
+                                                                                         elapsed_time))
+            return
         if message.reply_to_message.audio:
             if len(message.text.split()) == 1:
                 num = 0
@@ -72,22 +70,21 @@ def download(app, message):
                 message.edit('Music is downloaded\nFile name : {}\nElapsed time : {}'.format(file_name,
                                                                                              elapsed_time))
                 return
-            else:
-                file_name = " ".join(message.text.split()[1:]) + ".mp3"
-                if file_name in listdir("./Downloads/"):
-                    message.edit('There is already a music with this name')
-                    return
-                app.download_media(message.reply_to_message, file_name="./Downloads/{}".format(file_name))
-                end = time()
-                elapsed_time = str(end - start)
-                message.edit('Music is downloaded\nFile name : {}\nElapsed time : {}'.format(file_name,
-                                                                                             elapsed_time))
+            file_name = " ".join(message.text.split()[1:]) + ".mp3"
+            if file_name in listdir("./Downloads/"):
+                message.edit('There is already a music with this name')
                 return
+            app.download_media(message.reply_to_message, file_name="./Downloads/{}".format(file_name))
+            end = time()
+            elapsed_time = str(end - start)
+            message.edit('Music is downloaded\nFile name : {}\nElapsed time : {}'.format(file_name,
+                                                                                         elapsed_time))
+            return
     else:
         message.edit('You must reply to message')
 
 
-@Client.on_message(Filters.me & Filters.command(['upload'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['upload'], ['.', '/']))
 def upload(app, message):
     message.edit('Wait...')
     file_name = " ".join(message.text.split()[1:])
@@ -99,7 +96,7 @@ def upload(app, message):
         app.send_message(message.chat.id, f"Elapsed time : {elapsed}")
 
 
-@Client.on_message(Filters.me & Filters.command(['remove'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['remove'], ['.', '/']))
 def remove_file(app, message):
     if len(message.text.split()) == 2:
         message.edit('Wait...')
@@ -111,12 +108,11 @@ def remove_file(app, message):
                     remove("./Downloads/{}".format(i))
                     message.edit('Removed successfully')
                     return
-                else:
-                    num += 1
+                num += 1
             message.edit(f'File # {file} not found')
 
 
-@Client.on_message(Filters.me & Filters.command(['downloadlist'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['downloadlist'], ['.', '/']))
 def download_list(app, message):
     message.edit('Wait...')
     downloads = ""

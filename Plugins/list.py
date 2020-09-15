@@ -1,8 +1,8 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from time import sleep, time
 
 
-@Client.on_message(Filters.me & Filters.command(['adminlist'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['adminlist'], ['.', '/']))
 def user_list(app, message):
     sleep(0.2)
     chat_type = message.chat.type
@@ -24,7 +24,7 @@ def user_list(app, message):
         message.edit(f'Admin list:\n{creator}{admins}', parse_mode="Markdown", disable_web_page_preview=True)
 
 
-@Client.on_message(Filters.me & Filters.command(['botlist'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['botlist'], ['.', '/']))
 def bot_list(app, message):
     sleep(0.2)
     chat_type = message.chat.type
@@ -35,7 +35,7 @@ def bot_list(app, message):
         message.edit(f'Bot list:\n{bots}', parse_mode="Markdown", disable_web_page_preview=True)
 
 
-@Client.on_message(Filters.me & Filters.command(['ghostlist'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['ghostlist'], ['.', '/']))
 def ghost_list(app, message):
     sleep(0.2)
     message.edit('Wait...')
@@ -48,7 +48,7 @@ def ghost_list(app, message):
         message.edit(f'Deleted account number : {num}', disable_web_page_preview=True)
 
 
-@Client.on_message(Filters.me & Filters.command(['zombielist'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['zombielist'], ['.', '/']))
 def zombie_list(app, message):
     sleep(0.2)
     message.edit('Wait...')
@@ -61,7 +61,7 @@ def zombie_list(app, message):
         message.edit(f'Zombie account number : {num}', disable_web_page_preview=True)
 
 
-@Client.on_message(Filters.me & Filters.command(['ghostkick'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['ghostkick'], ['.', '/']))
 def ban_ghosts(app, message):
     sleep(0.2)
     message.edit('Wait...')
@@ -77,7 +77,7 @@ def ban_ghosts(app, message):
             message.edit(f'{num} deleted account is kicked')
 
 
-@Client.on_message(Filters.me & Filters.command(['zombiekick'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['zombiekick'], ['.', '/']))
 def ban_zombies(app, message):
     sleep(0.2)
     message.edit('Wait...')

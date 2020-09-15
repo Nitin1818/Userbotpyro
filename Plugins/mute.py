@@ -1,6 +1,9 @@
-from pyrogram import Client, Filters, ChatPermissions
+from pyrogram import (Client, filters)
 from time import time
 from datetime import datetime
+from pyrogram.types import (ChatPermissions)
+
+
 
 def user_mention(text):
     for i in text.split():
@@ -20,7 +23,7 @@ def mute_time(text):
     return int(days + hours + minutes)
 
 
-@Client.on_message(Filters.me & Filters.command(['mute'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['mute'], ['.', '/']))
 def mute_user(app, message):
     chat_type = message.chat.type
     stats = ("creator", "administrator")
@@ -33,14 +36,12 @@ def mute_user(app, message):
                     if message.reply_to_message.from_user.username:
                         message.edit(f'@{message.reply_to_message.from_user.username} is muted')
                         return
-                    else:
-                        message.edit('[{}](tg://user?id={}) is muted'.format(
-                            message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id
-                        ), parse_mode="Markdown", disable_web_page_preview=True)
-                        return
-                else:
-                    message.edit('You can\'t mute admin')
+                    message.edit('[{}](tg://user?id={}) is muted'.format(
+                        message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id
+                    ), parse_mode="Markdown", disable_web_page_preview=True)
                     return
+                message.edit('You can\'t mute admin')
+                return
             if message.entities:
                 if message.entities[0].type == 'mention':
                     if len(message.text.split()) == 2:
@@ -63,15 +64,13 @@ def mute_user(app, message):
                                 message.entities[0].user.first_name, message.entities[0].user.id
                             ))
                             return
-                        else:
-                            message.edit('Yout can\'t mute admin')
-                            return
-                    else:
-                        message.edit('You should use like this ".mute @username"')
+                        message.edit('Yout can\'t mute admin')
                         return
+                    message.edit('You should use like this ".mute @username"')
+                    return
 
 
-@Client.on_message(Filters.me & Filters.command(['unmute'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['unmute'], ['.', '/']))
 def unmute_user(app, message):
     chat_type = message.chat.type
     stats = ("creator", "administrator")
@@ -81,22 +80,21 @@ def unmute_user(app, message):
                 if app.get_chat_member(message.chat.id, message.reply_to_message.from_user.id).status not in stats:
                     app.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id,
                                              ChatPermissions(can_send_messages=True,
+                                                             can_send_animations=True,
                                                              can_send_media_messages=True,
                                                              can_invite_users=True,
                                                              can_add_web_page_previews=True,
                                                              can_send_polls=True,
-                                                             can_send_other_messages=True), 0)
+                                                             can_send_stickers=True), 0)
                     if message.reply_to_message.from_user.username:
                         message.edit(f'@{message.reply_to_message.from_user.username} is unmuted')
                         return
-                    else:
-                        message.edit('[{}](tg://user?id={}) is unmuted'.format(
-                            message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id
-                        ), parse_mode="Markdown", disable_web_page_preview=True)
-                        return
-                else:
-                    message.edit('You can\'t unmute admin')
+                    message.edit('[{}](tg://user?id={}) is unmuted'.format(
+                        message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id
+                    ), parse_mode="Markdown", disable_web_page_preview=True)
                     return
+                message.edit('You can\'t unmute admin')
+                return
             if message.entities:
                 if message.entities[0].type == 'mention':
                     if len(message.text.split()) == 2:
@@ -105,11 +103,12 @@ def unmute_user(app, message):
                                    [i.user.username for i in app.iter_chat_members(message.chat.id)] else True:
                             app.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id,
                                                      ChatPermissions(can_send_messages=True,
+                                                                     can_send_animations=True,
                                                                      can_send_media_messages=True,
                                                                      can_invite_users=True,
                                                                      can_add_web_page_previews=True,
                                                                      can_send_polls=True,
-                                                                     can_send_other_messages=True), 0)
+                                                                     can_send_stickers=True), 0)
                             message.edit(f'@{user_mention(message.text)} is muted')
                             return
                     else:
@@ -120,24 +119,23 @@ def unmute_user(app, message):
                         if app.get_chat_member(message.chat.id, message.entities[0].user.id).status not in stats:
                             app.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id,
                                                      ChatPermissions(can_send_messages=True,
+                                                                     can_send_animations=True,
                                                                      can_send_media_messages=True,
                                                                      can_invite_users=True,
                                                                      can_add_web_page_previews=True,
                                                                      can_send_polls=True,
-                                                                     can_send_other_messages=True), 0)
+                                                                     can_send_stickers=True), 0)
                             message.edit('[{}](tg://user?id={}) is unmuted'.format(
                                 message.entities[0].user.first_name, message.entities[0].user.id
                             ))
                             return
-                        else:
-                            message.edit('Yout can\'t unmute admin')
-                            return
-                    else:
-                        message.edit('You should use like this ".unmute @username"')
+                        message.edit('Yout can\'t unmute admin')
                         return
+                    message.edit('You should use like this ".unmute @username"')
+                    return
 
 
-@Client.on_message(Filters.me & Filters.command(['tmute'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['tmute'], ['.', '/']))
 def tmute_user(app, message):
     chat_type = message.chat.type
     stats = ("creator", "administrator")
@@ -152,13 +150,12 @@ def tmute_user(app, message):
                             message.edit(f'@{message.reply_to_message.from_user.username} is muted'
                                          f' for {datetime.utcfromtimestamp(mute_time(message.text)).strftime("%d days %H hours %M minutes")}')
                             return
-                        else:
-                            message.edit('[{}](tg://user?id={}) is muted for {}'.format(
-                                message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id,
-                                datetime.utcfromtimestamp(mute_time(message.text)).strftime(
-                                    "%d days %H hours %M minutes")
-                            ), parse_mode="Markdown", disable_web_page_preview=True)
-                            return
+                        message.edit('[{}](tg://user?id={}) is muted for {}'.format(
+                            message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id,
+                            datetime.utcfromtimestamp(mute_time(message.text)).strftime(
+                                "%d days %H hours %M minutes")
+                        ), parse_mode="Markdown", disable_web_page_preview=True)
+                        return
                 else:
                     message.edit('You can\'t mute admin')
                     return
@@ -197,7 +194,7 @@ def tmute_user(app, message):
                         return
 
 
-@Client.on_message(Filters.me & Filters.command(['kick'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['kick'], ['.', '/']))
 def kick_user(app, message):
     chat_type = message.chat.type
     stats = ("creator", "administrator")
@@ -209,14 +206,12 @@ def kick_user(app, message):
                     if message.reply_to_message.from_user.username:
                         message.edit(f'@{message.reply_to_message.from_user.username} is kicked')
                         return
-                    else:
-                        message.edit('[{}](tg://user?id={}) is kicked'.format(
-                            message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id
-                        ), parse_mode="Markdown", disable_web_page_preview=True)
-                        return
-                else:
-                    message.edit('You can\'t kick admin')
+                    message.edit('[{}](tg://user?id={}) is kicked'.format(
+                        message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id
+                    ), parse_mode="Markdown", disable_web_page_preview=True)
                     return
+                message.edit('You can\'t kick admin')
+                return
             if message.entities:
                 if message.entities[0].type == 'mention':
                     if len(message.text.split()) == 2:
@@ -237,9 +232,7 @@ def kick_user(app, message):
                                 message.entities[0].user.first_name, message.entities[0].user.id
                             ))
                             return
-                        else:
-                            message.edit('Yout can\'t kick admin')
-                            return
-                    else:
-                        message.edit('You should use like this ".kick @username"')
+                        message.edit('Yout can\'t kick admin')
                         return
+                    message.edit('You should use like this ".kick @username"')
+                    return

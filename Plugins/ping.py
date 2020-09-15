@@ -1,8 +1,8 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 import datetime
 
 
-@Client.on_message(Filters.me & Filters.command(['ping'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['ping'], ['.', '/']))
 def ping(client, message):
     start = datetime.datetime.now()
     message.edit('Pong!')

@@ -1,10 +1,10 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from time import sleep
 from os import remove, listdir
 from requests import post
 
 
-@Client.on_message(Filters.me & Filters.command("paste", prefixes=".") & Filters.reply)
+@Client.on_message(filters.me & filters.command("paste", prefixes=".") & filters.reply)
 def del_dog(app, message):
     message.edit('Wait...')
     if message.reply_to_message:

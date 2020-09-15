@@ -1,4 +1,4 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 
 
 def username(text):
@@ -7,7 +7,7 @@ def username(text):
             return i[1:]
 
 
-@Client.on_message(Filters.me & Filters.group & Filters.command(['promote'], ['.', '/']))
+@Client.on_message(filters.me & filters.group & filters.command(['promote'], ['.', '/']))
 def promote_user(client, m):
     if client.get_chat_member(m.chat.id, client.get_me().id).status == 'creator' or 'administrator':
         if m.reply_to_message:
@@ -64,7 +64,7 @@ def promote_user(client, m):
             return
 
 
-@Client.on_message(Filters.me & Filters.group & Filters.command(['demote'], ['.', '/']))
+@Client.on_message(filters.me & filters.group & filters.command(['demote'], ['.', '/']))
 def demote_user(client, m):
     if client.get_chat_member(m.chat.id, client.get_me().id).status == 'creator' or 'administrator':
         if m.reply_to_message:

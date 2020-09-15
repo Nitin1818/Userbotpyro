@@ -1,4 +1,4 @@
-from pyrogram import Client, Filters
+from pyrogram import Client, filters
 from time import sleep
 
 moon = "🌖🌕🌔🌓🌒🌑🌘🌗"
@@ -7,7 +7,7 @@ run = "🏃‍⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
 car = "🚗‍⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
 
 
-@Client.on_message(Filters.me & Filters.command(['animation'], ['.', '/']))
+@Client.on_message(filters.me & filters.command(['animation'], ['.', '/']))
 def spin(app, message):
     if len(message.text.split()) > 1:
         text = " ".join(message.text.split()[1:]).replace(" ", "")
