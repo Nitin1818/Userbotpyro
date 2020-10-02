@@ -71,7 +71,7 @@ def ban_ghosts(app, message):
             num = 0
             for i in app.iter_chat_members(message.chat.id):
                 if i.user.is_deleted:
-                    app.kick_chat_member(message.chat.id, i.user.id, time() + 60)
+                    app.kick_chat_member(message.chat.id, i.user.id, int(time() + 60))
                     num += 1
                     sleep(0.5)
             message.edit(f'{num} deleted account is kicked')
@@ -87,7 +87,7 @@ def ban_zombies(app, message):
             num = 0
             for i in app.iter_chat_members(message.chat.id):
                 if i.user.status in ("long_time_ago", "within_month"):
-                    app.kick_chat_member(message.chat.id, i.user.id, time() + 60)
+                    app.kick_chat_member(message.chat.id, i.user.id, int(time() + 60))
                     num += 1
                     sleep(0.5)
             message.edit(f'{num} zombie account is kicked')
